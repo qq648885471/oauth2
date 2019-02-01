@@ -9,14 +9,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 
 @RestController
@@ -48,6 +52,13 @@ public class CodeCallbackController {
         System.out.println("入参："+JSONObject.toJSONString(params));
 
         return token;
+    }
+
+    @PostMapping(value = "/user/info", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Object info(HttpServletRequest request) {
+        System.out.println(request.getHeader("Authorization"));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return authentication;
     }
 
 }

@@ -3,6 +3,7 @@ package com.oauth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -26,6 +28,8 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private BootUserDetailService userDetailService;
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
     public ApprovalStore approvalStore(){
@@ -36,9 +40,9 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Bean
     public TokenStore tokenStore() {
-        return new InMemoryTokenStore();
+//        return new InMemoryTokenStore();
         // 需要使用 redis 的话，放开这里
-//            return new RedisTokenStore(redisConnectionFactory);
+            return new RedisTokenStore(redisConnectionFactory);
     }
 
     @Override
