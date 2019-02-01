@@ -1,2 +1,9 @@
 server:
   port: 8080
+spring:
+  thymeleaf:
+    cache: false
+
+oauth:
+  loginPage: /auth/login
+  loginProcessingUrl: /auth/authorize

@@ -28,7 +28,7 @@ public class BootUserDetailService implements UserDetailsService {
         authorities.add(authority);
 
 
-        User user=new User("zq",passwordEncoder.encode("123"),authorities);
+        User user=new User(username,passwordEncoder.encode(username),authorities);
         if(user==null) {
             throw new UsernameNotFoundException("用户名不存在");
         }

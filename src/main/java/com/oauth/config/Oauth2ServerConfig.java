@@ -24,6 +24,8 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     private AuthenticationManager authenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private BootUserDetailService userDetailService;
 
     @Bean
     public ApprovalStore approvalStore(){
@@ -65,6 +67,7 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(tokenStore())
 //                .tokenStore(new InMemoryTokenStore())
                 .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailService) //必须加入 不然无法刷新token
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
                 .reuseRefreshTokens(true)
         ;

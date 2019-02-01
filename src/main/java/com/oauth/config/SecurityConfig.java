@@ -16,7 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig  extends WebSecurityConfigurerAdapter{
     @Autowired
     private BootUserDetailService userDetailService;
-
+    @Autowired
+    private SmscodeProvider smscodeProvider;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.formLogin().and()
@@ -33,6 +34,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                 .anyRequest().permitAll()
                 .and().formLogin()
+                .loginPage("自定义")//登录页面
+                .loginProcessingUrl("自定义") //登录处理页面
                 .and()
                 .httpBasic()
                 .disable()
@@ -42,7 +45,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService);
+        //账号密码
+//        auth.userDetailsService(userDetailService);
+        auth.authenticationProvider(smscodeProvider);//短信验证码形式
     }
 
     @Override
